@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    
+    
+    <style>
+     #t_errorEmail{
+            display: none;
+            font-size: 12px !important;
+            color: #EF5350;
+        }
+    </style>
+    
+</head>
+
+<body>
+    <p>Editar Validadores (cada email separado por ',' sin espacios)</p>
+    <textarea name="edit" id="edit" value="" cols="80" rows="5"></textarea>
+    <br>
+    <p id="t_errorEmail">*Uno o varios emails introducidos no son válidos</p>
+    <br><br>
+    <button id="save" class="create">Guardar</button>
+</body>
+<script>
+    google.script.run.withSuccessHandler(function(validators) {
+    
+        $('#edit').val(validators);
+    }).getAdminUsers();
+
+
+    //Comprueba que los emails son corectos, si es así, guarda los nuevos datos en la BD de la spreadsheet
+    $('#save').click(function() {
+            
+            var validators = $("#edit").val().split(",");//Captura el string de la caja de texto de validadores y los separa por una ','
+
+            google.script.run.withSuccessHandler(function(mailOk) {
+            
+                if (mailOk == true) {
+                    $("#t_errorEmail").css("display", "none");
+                    google.script.run.modificarValidadores($('#edit').val());
+                    google.script.run.addSelectValidator($('#edit').val().split(","));
+                    return;
+                } else{
+                    $("#t_errorEmail").css("display", "inline");
+                    return;
+                    }
+                
+            }).validarEmail(validators);
+            
+        
+    });
+    
+  
+</script>
+
+</html>

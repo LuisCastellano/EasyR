@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://opensource.keycdn.com/angularjs/1.6.2/angular.min.js"></script>
+
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!--//////////////////////////////////////////
+    //             All STYLE code           //
+   //////////////////////////////////////////-->
+    <style>
+        html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        body {
+            width: 100%;
+            height: 100%;
+            color: #616161;
+            font-weight: bold;
+        }
+        /* //// ONOFFSWITCH ////*/
+        
+        .onoffswitch {
+            margin-bottom: 20%;
+            position: relative;
+            width: 72px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        .onoffswitch-checkbox {
+            display: none;
+        }
+        
+        .onoffswitch-label {
+            display: block;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid #999999;
+            border-radius: 43px;
+        }
+        
+        .onoffswitch-inner {
+            display: block;
+            width: 200%;
+            margin-left: -100%;
+            transition: margin 0.3s ease-in 0s;
+        }
+        
+        .onoffswitch-inner:before,
+        .onoffswitch-inner:after {
+            display: block;
+            float: left;
+            width: 50%;
+            height: 20px;
+            padding: 0;
+            line-height: 20px;
+            font-size: 10px;
+            color: white;
+            font-family: Trebuchet, Arial, sans-serif;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+        
+        .onoffswitch-inner:before {
+            content: "ON";
+            padding-left: 5px;
+            background-color: #2196F3;
+            color: #FFFFFF;
+        }
+        
+        .onoffswitch-inner:after {
+            content: "OFF";
+            padding-right: 5px;
+            background-color: #EEEEEE;
+            color: #999999;
+            text-align: right;
+        }
+        
+        .onoffswitch-switch {
+            display: block;
+            width: 20px;
+            margin: 0px;
+            background: #FFFFFF;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 48px;
+            border: 2px solid #999999;
+            border-radius: 43px;
+            transition: all 0.3s ease-in 0s;
+        }
+        
+        .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-inner {
+            margin-left: 0;
+        }
+        
+        .onoffswitch-checkbox:checked+.onoffswitch-label .onoffswitch-switch {
+            right: 0px;
+        }
+        /* //// ///////// ////*/
+        
+        #scroll {
+            overflow-x: hidden;
+            overflow-y: auto;
+            top: 58px;
+            position: fixed;
+            width: 100%;
+            bottom: 50px;
+        }
+        
+        #refr_select,
+        #refr_select2 {
+            float: inherit !important;
+            margin-top: 5%;
+            color: #2196F3;
+        }
+        
+        #donutchart {
+            width: 100%;
+            height: 100%;
+        }
+        
+        #p1 p {
+            color: #616161;
+            font-weight: bold;
+            margin-top: 20%;
+        }
+        
+        #div-logo {
+            position: fixed;
+            bottom: 0px;
+            width: 100%;
+            height: 30px;
+            background-color: #ffffff;
+            border-top: 1px solid #dcdcdc;
+            text-align: right;
+            
+        }
+        
+        #logo {
+            margin-right: 5%;
+            float: right;
+            height: 30px;
+            width: 80px;
+            position: relative;
+            /*El div será ubicado con relación a la pantalla*/
+        }
+        
+        #feedback{
+        float: left;
+        margin-left:3%;
+        margin-top:1%;
+        color:#4caf50 !important;
+        }
+        
+        #titleGraph {
+            font-weight: bold;
+            color: #616161;
+            font-size: 15px;
+        }
+        /*//////////////////////CONFIGURACIÓN////////////////////*/
+        
+        i {
+            float: right;
+            cursor: pointer;
+        }
+        
+        input,
+        select {
+            width: 90%;
+        }
+        
+        #boxsave,
+        #box,
+        #box_switch,
+        #boxNT,
+        #box_view {
+            width: 85%;
+            margin-top: 5%;
+            padding: 5%;
+            padding-top: 10%;
+            padding-bottom: 15%;
+            -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+        }
+        
+        #v_emailAdmin,
+        #v_solicit,
+        #v_valid,
+        #plantilla_act {
+            font-size: 14px !important;
+            color: #2196F3;
+        }
+        
+        #NewTemplate {
+            margin-left: -10%;
+        }
+        
+        #boxNT {
+            padding-top: 5%;
+            padding-bottom: 10%;
+        }
+        
+        #box_switch {
+            padding-top: 1%;
+            padding-bottom: 1%;
+        }
+        
+        #save {
+            position: relative;
+            margin-top: 15%
+        }
+        
+        #box p {
+            font-size: 120%;
+            margin bottom: 10%;
+        }
+        
+        #box_view {
+            padding-top: 5%;
+            padding-bottom: 10%;
+        }
+        
+        #t_errorEmail,
+        #t_error_valores,
+        #t_error_combo {
+            display: none;
+            font-size: 12px !important;
+            color: #EF5350;
+        }
+        
+        #menu {
+            -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+        }
+        
+        ul {
+            color: #616161;
+            text-align: left;
+            display: inline;
+            margin: 0;
+            padding: 15px 4px 17px 0;
+            list-style: none;
+            width: 100%;
+        }
+        
+        ul li {
+            font: bold 12px/18px sans-serif;
+            display: inline-block;
+            margin-right: -4px;
+            position: relative;
+            padding: 15px 20px;
+            background: #fff;
+            cursor: pointer;
+            -webkit-transition: all 0.2s;
+            -moz-transition: all 0.2s;
+            -ms-transition: all 0.2s;
+            -o-transition: all 0.2s;
+            transition: all 0.2s;
+        }
+        
+        ul li:hover {
+            background: #2196F3;
+            color: #fff;
+        }
+        
+        ul li ul {
+            padding: 0;
+            position: absolute;
+            top: 48px;
+            left: 0;
+            width: 150px;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+            display: none;
+            opacity: 0;
+            visibility: hidden;
+            -webkit-transiton: opacity 0.2s;
+            -moz-transition: opacity 0.2s;
+            -ms-transition: opacity 0.2s;
+            -o-transition: opacity 0.2s;
+            -transition: opacity 0.2s;
+        }
+        
+        
+        
+        /* ///////////////////////////////////////////*/
+        
+        .action {
+            background: #2196F3 !important
+        }
+        
+        #version{
+            float: left;
+            margin-top:1%;
+            margin-left:1%;
+           
+        }
+    </style>
+
+
+    <!--//////////////////////////////////////////
+      //             SCRIPT code              //
+     //////////////////////////////////////////-->
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCIC198NihOjix1o4-eX5AdeUhgZtQZWho",
+            authDomain: "backend-easyrequest.firebaseapp.com",
+            databaseURL: "https://backend-easyrequest.firebaseio.com",
+            projectId: "backend-easyrequest",
+            storageBucket: "backend-easyrequest.appspot.com",
+            messagingSenderId: "240570650680"
+        };
+        firebase.initializeApp(config);
+
+
+
+        //Cambia el estado del complemento ON/OFF.
+        google.script.run.withSuccessHandler(function(existUser) {
+
+            if (existUser[0] == true) { //Si el usuario esta registrado.
+                //Comprueba bloqueo.
+                google.script.run.withSuccessHandler(function(bloq) {
+
+                    if (bloq == true) { //Si el usuario esta bloqueado.
+                        $("#myonoffswitch").prop('checked', false); //Apaga el complemento.
+                        google.script.run.eliminarTrigger();
+                        google.script.run.aviso("Ha superado el limite de peticiones.");
+                        return;
+                    } else {
+                        onOff();
+                        return;
+                    }
+
+                }).checKBloq(existUser[1]); //pasamos como parametro si es dominio o usuario.
+            } else {
+                onOff();
+                return;
+            }
+
+        }).checkRegisteredUser();
+
+
+        function onOff() {
+            google.script.run.withSuccessHandler(function(onoff) {
+                if (checkFormExist() == false) {
+                    return;
+                }
+                if (onoff == true) {
+                    $("#myonoffswitch").prop('checked', true);
+                    return;
+                } else {
+                    $("#myonoffswitch").prop('checked', false);
+                    return;
+                }
+            }).checkOnOff();
+        }
+
+        //////////////////////GRAFICA GOOGLE CHARTS////////////////////////////
+        google.charts.load("current", {
+            packages: ["corechart"]
+        });
+        google.charts.setOnLoadCallback(dibujarGrafico);
+
+        function dibujarGrafico() {
+            google.script.run.withSuccessHandler(function(graphContent) {
+
+                if (graphContent == false) {
+                    // Tabla de datos: valores y etiquetas de la gráfica
+                    var data = google.visualization.arrayToDataTable([
+                        ['Sin datos', ''],
+                        ['Sin datos', 0.1]
+
+                    ]);
+                    var options = {
+                        pieHole: 0.2,
+                        legend: 'none',
+                        colors: ['#BDBDBD']
+                    };
+                    // Dibujar el gráfico
+                    var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+                    chart.draw(data, options);
+                } else {
+                    // Tabla de datos: valores y etiquetas de la gráfica.
+                    var data = google.visualization.arrayToDataTable(graphContent);
+                    var options = {
+                        pieHole: 0.2,
+                        legend: 'none'
+                    };
+                    // Dibujar el gráfico.
+                    var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+                    chart.draw(data, options);
+                }
+            }).fillGraph();
+        }
+        ///////////////////////////////////////////////////////
+        //Llama a la funcion saveValues, y guarda en la BD los valores necesarios
+        function sendValor() {
+            google.script.run.withSuccessHandler(function(saveOk) {
+                //Si la configuración se ha guardado correctamente, se limpian los campos y navega hasta la vista de configuracion.
+                if (saveOk == true) {
+                    $('#adminMail').val('');
+                    $('#ta_values').val('');
+                    fillcomboColumn();
+                    fillcomboSheet();
+                    navigate("to_view_config");
+
+                } else {
+                    google.script.run.aviso("Ocurrió un error al guardar la configuración.\nReinicie el complemento e intentelo de nuevo");
+                }
+
+            }).saveValues($("#ta_values").val(), $("#comboColumn").val(), $("#comboSheet").val(), $("#adminMail").val());
+
+
+        }
+        //Abre el editor de plantillas
+        function openTemplateEditor() {
+            google.script.run.templateEditor();
+        }
+
+        function openReg() {
+            google.script.run.ventanaRegistro();
+        }
+
+
+        function fillcomboColumn() { //Rellena el comboBox con los nombres de las columnas.
+            google.script.run.withSuccessHandler(function(colums) {
+                var combo_Column = document.getElementById("comboColumn");
+                // limpiar comboBox.           
+                combo_Column.options.length = 0;
+                combo_Column.options.add(new Option("--Sin respuesta--", "default")); //Opción por defecto.
+                // Rellena comboBox con los nombres de las columnas.
+                for (var i = 0; i < colums.length; i++) {
+                    combo_Column.options.add(new Option(colums[i])); //Añade cada columna al combo de acción.
+                }
+            }).captureColumns();
+        }
+
+        function fillcomboSheet() { //Rellena el comboBox con los nombres de las hojas.
+            google.script.run.withSuccessHandler(function(values_sheets) {
+                var combo_sheet = document.getElementById("comboSheet");
+                // limpiar comboBox.
+                combo_sheet.options.length = 0;
+                combo_sheet.options.add(new Option("--Sin respuesta--", "default")); //Opción por defecto.
+
+                // Rellena comboBox con los nombres de las hojas.
+                for (var i = 0; i < values_sheets.length; i++) {
+                    combo_sheet.options.add(new Option(values_sheets[i])); //Añade cada hoja al combo de acción.     
+                }
+            }).captureSheets();
+        }
+
+
+        function errorMail() {
+
+            var validators = $("#adminMail").val().split(",");
+
+            google.script.run.withSuccessHandler(function(mailOk) {
+                if (mailOk == false) {
+                    $("#t_errorEmail").css("display", "inline");
+                    return false;
+                } else {
+                    $("#t_errorEmail").css("display", "none");
+                    return true;
+                }
+            }).validarEmail(validators);
+        }
+
+        function errorValores() {
+            if ($("#ta_values").val() == "") {
+                $("#t_error_valores").css("display", "inline");
+                return;
+            }
+            $("#t_error_valores").css("display", "none");
+        }
+
+
+        //Añade los posibles aprobadores a la vista configuración.
+        function addAdminUsers() {
+            google.script.run.withSuccessHandler(function(admins) {
+                var users = document.getElementById("users"),
+                    p = document.createElement("p");
+                for (var i = 0; i < admins.length; i++) {
+                    p = document.createElement("p");
+                    p.innerHTML = admins[i];
+                    users.appendChild(p);
+                }
+            }).getAdminUsers();
+        }
+
+        //Recoge los valores de configuracion y los añade a la vista.
+        function fillViewConfig() {
+            google.script.run.withSuccessHandler(function(valores_config) {
+
+
+                if (valores_config == false) {
+                    $('#v_valid').text("*No hay datos");
+                    $('#v_emailAdmin').text("*No hay datos");
+                    $('#v_solicit').text("*No hay datos");
+                    $('#v_valid').css("color", "#EF5350");
+                    $('#v_emailAdmin').css("color", "#EF5350");
+                    $('#v_solicit').css("color", "#EF5350");
+                    $('#no_config').css("display", "inline");
+                    return;
+                }
+
+
+                $('#v_valid').css("color", "#2196F3");
+                $('#users').css("color", "#2196F3");
+                $('#v_solicit').css("color", "#2196F3");
+                $('#no_config').css("display", "none");
+                $('#v_valid').text(valores_config[0]);
+                $('#users').empty();
+                addAdminUsers();
+                $('#v_solicit').text(valores_config[2]);
+            }).viewConfig();
+        }
+
+
+        //Añade el nombre de la plantilla actual al la vista de configuración.
+        function nameTemplate() {
+            google.script.run.withSuccessHandler(function(name_template) {
+                $('#plantilla_act').text(name_template);
+            }).returnNameTemplate();
+        }
+
+
+        function checkFormExist() {
+            google.script.run.withSuccessHandler(function(formOk) {
+                if (formOk == false) {
+                    google.script.run.aviso('No se ha detectado ningún formulario vinculado.\nPara activar EasyRequest debe haber un formulario asociado a la hoja.\nNOTA: Activa la opción "Recopilar las direcciones de correo electrónico".');
+                    $("#myonoffswitch").prop('checked', false);
+                    google.script.run.eliminarTrigger();
+                    return false;
+                }
+                return true;
+            }).checkForm();
+        }
+
+        //Comprueba si el usuario actual es el propietario de la hoja recibiendo los datos de la parte servidor
+        function comprobarPropiedad() {
+            google.script.run.withSuccessHandler(function(owner) {
+                if (owner == false) {
+                    google.script.run.aviso("¡AVISO!\nSolo el propietario de esta hoja de calculo puede configurar EasyRequest");
+                    setTimeout("google.script.host.close()", 3000);
+                    return;
+                }else{
+                google.script.run.setLocaleAndTime();
+                return;
+                }
+            }).isOwner();
+        }
+
+
+
+        function comprobar_On_off() {
+            //comprueba el estado del checkbox de on off.
+            $("#myonoffswitch").change(function() {
+                if ($("#myonoffswitch").is(':checked')) {
+
+                    google.script.run.withSuccessHandler(function(typeUs) {
+
+                        google.script.run.withSuccessHandler(function(bloq) {
+                            if (bloq == true) {
+                                google.script.run.aviso("Ha superado el limite de peticiones.");
+                                google.script.run.eliminarTrigger();
+                                $("#myonoffswitch").prop('checked', false);
+                                return;
+                            } else {
+                                //Comprueba si hay un formulario vinculado.
+                                google.script.run.withSuccessHandler(function(formOk) {
+                                    if (formOk == false) {
+                                        google.script.run.aviso('No se ha detectado ningún formulario vinculado.\nPara activar EasyRequest debe haber un formulario asociado a la hoja.\nNOTA: Activa la opción "Recopilar las direcciones de correo electrónico".');
+                                        $("#myonoffswitch").prop('checked', false);
+                                        google.script.run.eliminarTrigger();
+                                        return;
+                                    } else {
+                                        // Añade la columna oculta de IDReg.
+                                        google.script.run.addColumnID();
+                                        //Comprueba que no hay triggers redundantes;
+                                        google.script.run.getTriggers();
+                                        //Crea las columnas de validacion y comentario adicional si no existen.
+                                        google.script.run.addColumnRespuesta();
+                                        //Actualiza el grafico.
+                                        dibujarGrafico();
+                                        return;
+                                    }
+                                }).checkForm();
+                            }
+                        }).checKBloq(typeUs);
+                    }).typeUser();
+                } else {
+                    // Elimina el trigger onFormSubmit para detener el envio de validacion.
+                    google.script.run.eliminarTrigger();
+                    return;
+                }
+            });
+        }
+
+
+
+        //Si el usuario no existe, avisa de registro y se cierra el complemento.
+        function existUser() {
+        try{
+            google.script.run.withSuccessHandler(function(us) {
+            
+                if (us == false) {
+                    google.script.run.aviso('No esta registrado en EasyRequest.\nPuede registrarse en "Complementos > EasyRequest > Registro".');
+                    setTimeout("google.script.host.close()", 2000);
+                    return;
+                }
+            }).typeUser();
+            }catch(e){
+            console.log("ERROR check exist user: "+e)
+            }
+        }
+
+
+
+
+        //Navega por las distintas pantallas del complemento.
+        function navigate(dest) {
+            if (dest == "to1") {
+                $("#p1").fadeIn("fast");
+                $("#config").css("display", "none");
+                $("#vlist").css("display", "none");
+                $("#view_config").css("display", "none");
+            } else if (dest == "to_config") {
+                $("#config").fadeIn("fast");
+                $("#p1").css("display", "none");
+                $("#vlist").css("display", "none");
+                $("#view_config").css("display", "none");
+            } else if (dest == "vlist") {
+                $("#vlist").fadeIn("fast");
+                $("#graph1").css("display", "none");
+                $("#config").css("display", "none");
+                $("#view_config").css("display", "none");
+            } else if (dest == "donut") {
+                $("#graph1").fadeIn("fast");
+                $("#vlist").css("display", "none");
+                $("#config").css("display", "none");
+                $("#view_config").css("display", "none");
+            } else if (dest == "to_view_config") {
+                $("#view_config").fadeIn("fast");
+                $("#p1").css("display", "none");
+                $("#vlist").css("display", "none");
+                $("#config").css("display", "none");
+                fillViewConfig();
+            }
+        }
+        ////////////////////////////////////////////////
+   </script>
+
+</head>
+
+<body>
+    <!--////////////////////Menú///////////////////-->
+    <div id="menu">
+        <center>
+            <ul>
+                <li id="b_p1"><i class="material-icons" title="Visualiza los datos registrados.">equalizer</i></li>
+                <li id="b_config"><i class="material-icons" title="Configuración.">settings</i></li>
+                <li id="b_view_config"><i class="material-icons" title="Visualiza la configuracion actual.">event_note</i></li>
+            </ul>
+        </center>
+    </div>
+    <!--/////////////////////////////////////-->
+
+    <div id="scroll">
+        <center>
+            <div id="p1">
+                <div id="box_switch">
+                    <p>Activar/Desactivar</p>
+                    <div class="onoffswitch">
+                        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" unchecked>
+                        <label class="onoffswitch-label" for="myonoffswitch"> <span class="onoffswitch-inner"></span> <span class="onoffswitch-switch"></span> </label>
+                    </div>
+                </div>
+                <div id="box">
+                    <!--<i id="v_list" class="material-icons">view_list</i><i id="v_donut" class="material-icons">donut_small</i>-->
+                    <br>
+                    <br>
+                    <br>
+                    <!-- ///Grafica///-->
+                    <center>
+                        <label id="titleGraph">Indice de Validación</label>
+                    </center>
+                    <div id="graph1">
+                        <div id="donutchart"></div>
+                        <button id="b_refresh" class="action">Refrescar</button>
+                    </div>
+                    <!-- <div id="vlist">VISTA DE LISTA<br>(En desarrollo)</div>-->
+                </div>
+            </div>
+            <!--P1-->
+        </center>
+        <center>
+            <div id="config">
+                <div id="box"> <i class="material-icons" title="Email de la persona que administra las peticiones">info_outline</i>
+                    <p>Email del validador/es</p>
+                    <textarea id="adminMail" rows="4" cols="25" placeholder="email 1,email 2,email 3"></textarea>
+                    <br>
+                    <p id="t_errorEmail">*Uno o varios emails introducidos no son válidos</p>
+                </div>
+                <div id="box"> <i class="material-icons" title="Selecciona la hoja que esté enlazada al formulario.">info_outline</i>
+                    <p>Hoja enlazada al formulario</p>
+                    <select id="comboSheet" name="comboSheet"></select><br>
+                    <i id="refr_select2" class="material-icons">refresh</i>
+                    <br>
+                    <p id="t_error_combo">*Selecciona una hoja</p>
+                </div>
+                <div id="box"> <i class="material-icons" title="Selecciona la columna que contiene la dirección de correo electrónico del solicitante.">info_outline</i>
+                    <p>Correo electrónico del solicitante</p>
+                    <select id="comboColumn" name="comboColumn"></select><br>
+                    <i id="refr_select" class="material-icons">refresh</i>
+                    <br>
+                    <p id="t_error_combo">*Selecciona una columna</p>
+                </div>
+                <div id="box"> <i class="material-icons" title="Ejemplo: Aprobado,Denegado...">info_outline</i>
+                    <p>Valores de validación</p>
+                    <textarea id="ta_values" rows="4" cols="25" placeholder="Valor 1,Valor 2,Valor 3"></textarea>
+                    <br>
+                    <p id="t_error_valores">*Introduce valores de validación</p>
+                </div>
+                <div id="boxNT"> <i class="material-icons" title="Personaliza como se visualizan los datos en el email.">info_outline</i>
+                    <p>Plantilla email:</p>
+                    <button id="NewTemplate" class="action">+ Nueva plantilla</button>
+                </div>
+                <button id="save" class="create">Guardar</button>
+
+
+            </div>
+        </center>
+
+        <center>
+            <div id="view_config">
+                <p style="font-size:25px; color:#2196F3">Configuración actual</p>
+                <div id="box_view">
+                    <p>Email del validador/es</p>
+                    <div id="users">
+                        <p id="v_emailAdmin"></p>
+                    </div>
+                    <div>
+                        <i id="edit-validators" class="material-icons" title="Añade o elimina validadores.">edit</i>
+                    </div>
+                </div>
+                <div id="box_view">
+                    <p>Correo electrónico del solicitante</p>
+                    <p>(Columna)</p>
+                    <p id="v_solicit"></p>
+
+                </div>
+                <div id="box_view">
+                    <p>Valores de validación</p>
+                    <p id="v_valid"></p>
+                    <div>
+                        <i id="edit-values" class="material-icons" title="Añade o elimina los valores de validación.">edit</i>
+                    </div>
+                </div><br>
+                <div id="box_view">
+                    <p>Plantilla actual</p>
+                    <p id="plantilla_act"></p>
+                    <button id="view_template" class="action">Ver / Editar</button>
+                </div><br>
+
+
+                <p id="no_config" style="display:none; color: #EF5350;">*Actualmente no tiene ninguna configuración disponible.</p>
+            </div>
+        </center>
+    </div>
+
+
+
+    <!-- /////////////////////SCRIPT .click code///////////////////////////////////////// -->
+    <script>
+        existUser();
+
+        comprobarPropiedad(); //llamada para comprobar el propietario de la hoja de calculo.
+
+        comprobar_On_off(); //llamada para comprobar el estado del checkbox de on off.
+
+        //Se muestra inicialmente la pantalle principal.
+        navigate("to1");
+
+        //Rellena los desplegables con los valores de las columnas y las hojas.
+        fillcomboColumn();
+        fillcomboSheet();
+        //////////////////////////////////////////////////////////////
+        $('#b_p1').click(function() {
+            dibujarGrafico();
+            navigate("to1");
+        });
+
+        //Rellena el desplegable con las columnas de la activesheet
+        $('#refr_select').click(function() {
+            fillcomboColumn();
+        });
+
+        //Rellena el desplegable con las hojas de la spreadsheet
+        $('#refr_select2').click(function() {
+            fillcomboSheet();
+        });
+
+        //Navega a la pantalla de configuración.
+        $('#b_config').click(function() {
+            navigate("to_config");
+        });
+
+        //Navega a la pantalla de vista de configuración.
+        $('#b_view_config').click(function() {
+            nameTemplate();
+            navigate("to_view_config");
+        });
+
+        //Muestra la grafica en lista.
+        $('#v_list').click(function() {
+            navigate("vlist");
+        });
+
+        //Muestra la grafica de donut.
+        $('#v_donut').click(function() {
+            navigate("donut");
+        });
+
+        //Actualiza los datos de la grafica.
+        $('#b_refresh').click(function() {
+            dibujarGrafico();
+        });
+
+        //Abre la ventana de edición de validadores.
+        $('#edit-validators').click(function() {
+            google.script.run.editValidator();
+        });
+        
+        //Abre la ventana de FeedBack.
+        //$('#feedback').click(function() {
+        //    google.script.run.openFeedback();
+        //});
+        
+        
+        //Abre la ventana de edición de valores de validación.
+        $('#edit-values').click(function() {
+            google.script.run.editValidationValues();
+        });
+
+        $('#save').click(function() {
+            errorMail();
+            errorValores();
+            if ($("#t_errorEmail").css("display") == "inline") {
+                return;
+            }
+            if ($("#t_error_combo").css("display") == "inline") {
+                return;
+            }
+
+            if ($("#t_error_valores").css("display") == "inline") {
+                return;
+            }
+            sendValor();
+            google.script.run.addSelectValidator($("#adminMail").val().split(","))
+        });
+
+        //Abre el editor de texto
+        $('#NewTemplate').click(function() {
+            openTemplateEditor();
+        });
+
+
+        //al quitar el foco del puntero, comprueba el email
+        $('#adminMail').focusout(function() {
+            errorMail();
+        });
+        //al quitar el foco del puntero, comprueba el email
+        $('#comboColumn').focusout(function() {
+            if ($("#comboColumn").val() == '--Sin respuesta--') {
+                $("#t_error_combo").css("display", "inline");
+                return;
+            } else {
+                $("#t_error_combo").css("display", "none");
+                return;
+            }
+        });
+
+
+
+        //al quitar el foco del puntero,comprueba valores
+        $('#ta_values').focusout(function() {
+            errorValores();
+        });
+
+
+
+        $('#view_template').click(function() {
+            //Comprueba si hay plantillas ya creadas.
+            google.script.run.withSuccessHandler(function(existTemplate) {
+                if (existTemplate == false) {
+                    google.script.run.aviso("No se encontraron plantillas creadas.\nPor favor, cree una nueva en el apartado de configuración");
+                    return;
+                } else {
+                    google.script.run.templateEditorAndView();
+                    return;
+                }
+            }).templateExist();
+        });
+        
+        
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55971376-1', 'auto');
+  ga('send', 'pageview');
+
+
+        
+        
+    </script>
+</body>
+<!-- ///Logo Ieducando (enlace a la web)///-->
+<footer id="div-logo">
+    <i id="feedback" class="material-icons" onclick=" google.script.run.openFeedback()">feedback</i>
+    <label id="version">v1.0.0 - beta</label>
+    <a id="logourl" href="http://www.ieducando.com"><img id="logo" src="http://i.imgur.com/ztHGHXY.png"></a>
+</footer>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+</head>
+
+<body>
+    <p>Modifica los valores de validación (cada valor separado por ',' sin espacios)</p>
+    <textarea name="edit" id="edit" value="" cols="80" rows="5"></textarea>
+    <br><br>
+    <button id="save" class="create">Guardar</button>
+</body>
+<script>
+    google.script.run.withSuccessHandler(function(values) {
+        $('#edit').val(values);
+    }).getValidationValues();
+
+
+    //Guarda los nuevos datos en la BD de la spreadsheet
+    $('#save').click(function() {
+        google.script.run.modificarValoresValidacion($('#edit').val())
+    });
+
+</script>
+
+</html>

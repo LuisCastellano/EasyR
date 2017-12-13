@@ -1,0 +1,148 @@
+<!--
+Ventana para registro de usuario tanto individual como del dominio.
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Registro</title>
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <style>
+        #container {
+            width: 100%;
+            height: 500px;
+            margin: 0 auto;
+            text-align:center;
+        }
+        
+        .card {
+            margin: 0 auto;
+            text-align: center;
+            width: 99%;
+            height: 99%;
+        }
+        
+        #check-box-container {
+            width: 50%;
+            text-align: left;
+            margin: 0 auto
+        }
+        
+        #check-box-container label {
+            margin-left: 20%;
+        }
+        
+        #b_save {
+            margin-top: 9%;
+            padding-bottom: 3%;
+        }
+        
+        #profile {
+            margin-bottom: 6%;
+        }
+        
+        
+        
+        #name_plus {
+            font-size: 15px;
+            color: #2196f3;
+            font-weight: bold
+        }
+        
+        h5 {
+            padding-top: 10%;
+            color: #616161;
+        }
+        
+        #reg {
+            color: #616161;
+            font-size: 12px;
+        }
+        
+        .divider {
+            margin: 0 auto;
+            width: 85%;
+        }
+        
+        .img-profile {
+            width: 100px;
+        }
+        
+        #img-load{
+        display: none;
+        width: 50%;
+        margin-top:20%;
+        }
+
+    </style>
+</head>
+
+
+<body>
+    <div id="container">
+        <div class="card">
+
+            <h5> Registro EasyRequest </h5>
+            <br>
+
+
+            <div id="profile"> <img class="img-profile circle" src="https://avatar.guim.co.uk/no-user-image.gif" />
+                <br><br>
+                <label id="name_plus"></label>
+            </div>
+            <div class="divider"></div>
+
+            <p id="reg">Registrarse como:</p>
+            <div id="check-box-container">
+                <input name="group1" type="radio" id="individual" value="u" />
+                <label for="individual">Individual</label><br>
+                <input name="group1" type="radio" id="dominio" value="d" />
+                <label for="dominio">Dominio</label>
+            </div>
+            <!--<input type="submit" id="b_save" value="Registrar">-->
+            <a type="submit" class="btn-floating btn-large waves-effect waves-lightgreen green" id="b_save" value="Registrar"> <i class="material-icons">done</i></a>
+
+        </div>
+        
+        <!-- PRELOADER  -->
+        
+    <img id="img-load" src="https://camo.githubusercontent.com/a1a81b0529517027d364ee8432cf9a8bd309542a/687474703a2f2f692e696d6775722e636f6d2f56446449444f522e676966">
+        
+    </div>
+
+ 
+ 
+ 
+    <script>
+        //navigate('toload');
+        //Cargamos en el html la imagen y el nombre del perfil Google+.
+        google.script.run.withSuccessHandler(function(dPlus) {
+            $('.img-profile').attr("src", dPlus[1]);
+            $('#name_plus').text(dPlus[0]);
+        }).getProfile();
+
+        //Guarda lo datos en la BD.
+        $('#b_save').click(function() {
+            $(".card").css("display", "none");
+            $("#img-load").css("display", "inline");
+            google.script.run.regUsuarioBD($('input:radio[name=group1]:checked').val());
+        });
+
+    </script>
+
+</body>
+
+
+</html>
+
+
+

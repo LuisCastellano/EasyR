@@ -1,0 +1,139 @@
+<html>
+
+<head>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+    
+    <title>Info - EasyRequest</title>
+    <link rel="icon" 
+      type="image/png" 
+      href="http://i.imgur.com/ROEJXgf.png">
+
+    <style>
+        html {
+            height: 100%;
+            width: 100%;
+        }
+        
+        body {
+            height: 98%;
+            width: 98%;
+        }
+        
+        #card {
+            width: 50%;
+            margin: 0 auto;
+            margin-top: -3%;
+        }
+        
+        #appName {
+            font-size: 250%;
+            color: #E57373;
+        }
+        
+        #exito {
+            font-size: 120%;
+            color: #424242;
+        }
+        
+        #formulario {
+            font-weight: bold;
+            color: #616161;
+            font-size: 170%;
+        }
+        
+        #cab {
+            font-weight: bold;
+            font-size: 110%;
+            color: #616161;
+        }
+        
+        #validacion {
+            margin-top: 6%;
+        }
+        
+        #dev {
+            font-size: 70%;
+        }
+        
+        #logo {
+            width: 11%;
+            float: right;
+        }
+        
+        #superior {
+            margin-top: 5%;
+            margin-bottom: 7%;
+        }
+        
+        #valid,
+        #coment {
+            font-size: 100%
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+    <div id="superior">
+        <center>
+            <label id="appName">EasyRequest</label>
+            <br>
+            <br>
+            <br>
+            <label id="exito">Su respuesta se ha enviado correctamente</label>
+        </center>
+    </div>
+    <div id="card">
+        <div class="card horizontal">
+
+            <div class="card-stacked">
+                <div class="card-content">
+                    <div id="2" style="height: 7%; width: 100%;">
+                        <center>
+                            <ul id="formulario">
+                                <li>
+                                    <p>Formulario: </p>
+                                </li>
+                                <li>
+                                    <p style="font-weight: normal;">
+                                        <?= name_form ?>
+                                    </p>
+                                </li>
+                            </ul>
+                        </center>
+                    </div>
+                    <hr width="90%" color="#BDBDBD">
+                    <div id="3" style="height: 20%; width: 100%;">
+                        <center>
+                            <ul id="validacion">
+                                <li>
+                                    <label id="cab">Validación:  </label></li>
+                                <li>
+                                    <label id="valid"><?= validation ?></label> </ul>
+                            <ul id="comentario">
+                                <li>
+                                    <label id="cab">Comentario adicional: </label></li>
+                                <li>
+                                    <label id="coment"><?= coment ?></label> </ul>
+                        </center>
+                    </div>
+
+                </div>
+                <div class="card-action">
+                    <a id="logourl" href="http://www.ieducando.com" target="_blank"><img id="logo" src="http://i.imgur.com/ztHGHXY.png"></a>
+                    <label for="logourl" style="float:right; margin-right: 2%;">developed by: </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,138 @@
+<html>
+
+<head>
+    <base target="_top">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+    <!--////////////////Implementa el editor de texto/////////////////-->
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            height: 300,
+            plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table contextmenu paste code'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            content_css: '//www.tinymce.com/css/codepen.min.css'
+        });
+
+    </script>
+    <!--/////////////////////////////////////////////////////////-->
+
+    <!--//////////////////////////////////////////
+    //             All STYLE code           //
+   //////////////////////////////////////////-->
+
+    <style>
+        button {
+            float: right;
+            margin-right: 5%;
+        }
+        
+        label {
+            color: #616161;
+            font-weight: bold;
+            margin-top: 20%;
+        }
+        
+        #noName {
+            display: none;
+            font-size: 12px !important;
+            color: #EF5350;
+        }
+        
+         #cab i{
+        vertical-align: middle;
+        margin-left: 100px;
+        cursor: pointer;
+        }
+
+    </style>
+
+
+
+
+
+
+
+
+    <script>
+        //Agrega al editor de plantillas los valores reemplazables. "{{_}}".
+        function valuesTemplate() {
+            google.script.run.withSuccessHandler(function(template_values) {
+                var cont = 0
+                for (var i = 0; i < template_values.length; i++) {
+                    cont++
+                    tinyMCE.activeEditor.dom.add(tinyMCE.activeEditor.getBody(), 'p', {
+                        id: 'col' + cont
+                    }, template_values[i]);
+                }
+            }).templateValues();
+        }
+
+        //pasa la nueva plantilla a la funcion que la guarda en la sheetBD.
+        function getContent() {
+
+            google.script.run.saveTemplate(tinyMCE.activeEditor.getContent({
+                format: 'raw'
+            }), $('#nameTempl').val());
+
+        }
+
+        //Muestra u oculta el error si no ha dado nombre a la plantilla
+        function errorName() {
+            if ($("#nameTempl").val() == "") {
+                $("#noName").css("display", "inline");
+                return;
+            }
+            $("#noName").css("display", "none");
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <textarea id="templateEditor"></textarea>
+    <br>
+    <div id="cab">
+
+        <label>Nombre de la plantilla: </label>
+        <input id="nameTempl" type="text" name="nameTempl">
+        <label id="noName">*Introduce un nombre para la plantilla</label>
+        <i class="material-icons" title="Los valores dados entre '{{...}}' son los nombres de las columnas que posee la hoja en la que se activa el complemento, estos serán reemplazados automáticamente por los valores correspondiente de cada registro.">help</i>
+        <label>Ayuda</label>
+        <button id="saveTempl" class="create">Guardar</button>
+
+    </div>
+    
+    <script>
+        valuesTemplate();
+
+        //Ejecuta la funcion 'getSourceContent()' para pasar el contenido del editor.
+        $('#saveTempl').click(function() {
+            if ($("#noName").css("display") == "inline" || $("#nameTempl").val() == "") {
+                $("#noName").css("display", "inline");
+                return;
+            }
+            getContent();
+        });
+
+        //al quitar el foco del puntero, comprueba el email
+        $('#nameTempl').focusout(function() {
+            errorName();
+        });
+
+    </script>
+</body>
+
+</html>
